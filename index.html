@@ -1,112 +1,68 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Be My Valentine?</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background-color: pink;
-      margin: 50px 0 0 0;
-    }
+<title>Be My Valentine?</title>
 
-    .container {
-      position: relative; /* so absolutely-positioned children are relative to this */
-      display: inline-block;
-    }
+<style>
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: pink;
+    margin-top: 50px;
+}
 
-    button {
-      padding: 10px 20px;
-      font-size: 20px;
-      margin: 10px;
-      cursor: pointer;
-    }
+button {
+    padding: 10px 20px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+}
 
-    #no {
-      position: absolute;
-      left: 120px; /* initial fallback position */
-      top: 0;
-    }
+#no {
+    position: absolute;
+}
 
-    img, video {
-      width: 300px;
-      max-width: 90vw;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  </style>
+img, video {
+    width: 300px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+</style>
+
 </head>
+
 <body>
-  <div class="container" id="app">
-    <!-- Cute Cat Meme -->
-    <img id="catImage" src="catmeme.jpg" alt="A cute cat making a silly face">
-    <h1 id="question">Will you be my Valentine? ❤️</h1>
 
-    <div>
-      <button id="yes" type="button">YES</button>
-      <button id="no" type="button" aria-label="No">NO</button>
-    </div>
-  </div>
+<!-- Cat Image Shown First -->
+<img src="catmeme.jpg" alt="Cute Cat Meme">
 
-  <script>
-    (function () {
-      const yesBtn = document.getElementById('yes');
-      const noBtn = document.getElementById('no');
-      const app = document.getElementById('app');
+<h1>Will you be my Valentine? ❤️</h1>
 
-      function handleYes() {
-        // Replace only the contents of the app container, not the whole body
-        app.innerHTML = `
-          <h1 id="yay" tabindex="-1">YAY! ❤️ See you on Valentine's Day!</h1>
-          <video id="catVideo" autoplay loop muted controls playsinline>
-            <source src="https://i.imgur.com/B5LBHh5.mp4" type="video/mp4">
+<button onclick="yes()">YES</button>
+<button id="no" onmouseover="move()">NO</button>
+
+<script>
+
+function yes() {
+    document.body.innerHTML = `
+        <video autoplay loop muted controls>
+            <source src="catvideo.mp4" type="video/mp4">
             Your browser does not support the video tag.
-          </video>
-        `;
+        </video>
 
-        // Move focus to the new heading for accessibility
-        const heading = document.getElementById('yay');
-        if (heading) heading.focus?.();
-      }
+        <h1>YAY! ❤️ See you on Valentine's Day!</h1>
+    `;
+}
 
-      function moveNoButton() {
-        // Get viewport size and button size so the button stays fully visible
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const rect = noBtn.getBoundingClientRect();
-        const btnW = rect.width;
-        const btnH = rect.height;
+function move() {
+    var x = Math.random() * (window.innerWidth - 100);
+    var y = Math.random() * (window.innerHeight - 50);
 
-        // Keep some margin from the edges
-        const margin = 8;
+    document.getElementById("no").style.left = x + "px";
+    document.getElementById("no").style.top = y + "px";
+}
 
-        const maxX = Math.max(0, vw - btnW - margin);
-        const maxY = Math.max(0, vh - btnH - margin);
+</script>
 
-        const x = Math.floor(Math.random() * maxX);
-        const y = Math.floor(Math.random() * maxY);
-
-        // Position relative to the container if container is positioned, otherwise relative to document
-        const containerRect = app.getBoundingClientRect();
-        // Place noBtn relative to the container's top-left
-        noBtn.style.left = (x - containerRect.left + window.scrollX) + 'px';
-        noBtn.style.top = (y - containerRect.top + window.scrollY) + 'px';
-      }
-
-      yesBtn.addEventListener('click', handleYes);
-      noBtn.addEventListener('mouseover', moveNoButton);
-      // Support touch devices
-      noBtn.addEventListener('touchstart', function (e) {
-        e.preventDefault(); // prevent immediate click
-        moveNoButton();
-      }, { passive: false });
-
-    })();
-  </script>
 </body>
 </html>
